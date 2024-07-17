@@ -5,7 +5,6 @@ using BookStore.Application.Services;
 using BookStore.Infrastructure.Data;
 using BookStore.Infrastructure.Filters;
 using BookStore.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -90,4 +89,4 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookStore API V1");
 });
 
-app.Run();
+app.Run("https://localhost:7103");

@@ -1,0 +1,51 @@
+<div class="book-list-container">
+  <!-- Search, Sort, and Filter Components -->
+  <app-search-bar (search)="onSearch($event)"></app-search-bar>
+  <app-sort-dropdown (sort)="onSort($event)"></app-sort-dropdown>
+  <app-filter-date-range (filter)="onFilterDateRange($event)"></app-filter-date-range>
+
+  <!-- Add Book Button -->
+  <button class="btn btn-primary" (click)="openAddModal()">Add Book</button>
+
+    <!-- Book List Table -->
+  <div class="book-list">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Publication Date</th>
+          <th>Number of Pages</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of filteredBooks" (click)="onSelectBook(book)" [class.selected]="book === selectedBook">
+          <td>{{ book.title }}</td>
+          <td>{{ book.publicationDate | date: 'yyyy-MM-dd' }}</td>
+          <td>{{ book.numberOfPages }}</td>
+          <td>{{ book.description }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="openEditModal(book); $event.stopPropagation()">Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="onDeleteBook(book); $event.stopPropagation()">Delete</button>
+            
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-controls">
+    <button (click)="onPageChange(pageNumber - 1)" [disabled]="pageNumber === 1">Previous</button>
+    <span>Page {{ pageNumber }} of {{ totalPages }}</span>
+    <button (click)="onPageChange(pageNumber + 1)" [disabled]="pageNumber === totalPages">Next</button>
+  </div>
+
+    <!-- Export Buttons -->
+  <div class="d-flex justify-content-end mt-3">
+    <button class="btn btn-success mr-2" (click)="exportToExcel()">Export to Excel</button>
+    <button class="btn btn-danger" (click)="exportToPDF()">Export to PDF</button>
+    <button class="btn btn-info" (click)="viewPublicationChart()">View Publication Chart</button>
+  </div>
+</div>
+  

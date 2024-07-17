@@ -1,0 +1,16 @@
+<div class="filter-date-range">
+    <input 
+      type="date" 
+      class="form-control" 
+      [(ngModel)]="startDate" 
+      (change)="onFilterChange()">
+    <input 
+      type="date" 
+      class="form-control" 
+      [(ngModel)]="endDate" 
+      (change)="onFilterChange()">
+    
+    <button class="btn btn-primary" (click)="setDateRange('thisMonth')">This Month</button>
+    <button class="btn btn-primary" (click)="setDateRange('thisYear')">This Year</button>
+  </div>
+  

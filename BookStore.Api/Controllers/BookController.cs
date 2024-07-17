@@ -2,6 +2,7 @@
 using BookStore.Application.Interfaces;
 using BookStore.Infrastructure.Filters;
 using BookStore.Infrastructure.Requests;
+using BookStore.Infrastructure.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -30,26 +31,26 @@ namespace BookStore.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a list of books based on the provided filter criteria.
+        /// Retrieves a paginated list of books based on the provided filter criteria.
         /// </summary>
         /// <remarks>
         /// Sample request:
         ///
-        ///     GET /api/book/GetBooks?pageNumber=1&amp;pageSize=10&amp;name=Harry&amp;publishedAfter=2000
+        ///     GET /api/book/GetBooks?pageNumber=1&amp;pageSize=10&amp;name=Harry&amp;date=01.01.2023
         ///
         /// </remarks>
-        /// <param name="request">The filter request containing optional name and date parameters.</param>
+        /// <param name="request">The filter request containing optional name, date, pageNumber, and pageSize parameters.</param>
         /// <param name="cancellationToken">The cancellation token to cancel the request.</param>
         /// <returns>
-        /// A list of books that match the filter criteria.
+        /// A paginated list of books that match the filter criteria.
         /// </returns>
-        /// <response code="200">Returns the list of books.</response>
-        /// <response code="400">If the request is invalid or cannot be processed, return an error message.</response>
+        /// <response code="200">Returns the paginated list of books.</response>
+        /// <response code="400">If the request is invalid or cannot be processed, returns an error message.</response>
         [AllowAnonymous]
         [HttpGet("GetBooks")]
-        [ProducesResponseType(typeof(IEnumerable<BookDto>), 200)]
+        [ProducesResponseType(typeof(PagedResult<BookDto>), 200)]
         [ProducesResponseType(typeof(string), 400)]
-        public async Task<ActionResult<IEnumerable<BookDto>>> GetAllBooks([FromQuery] BooksPagedFilterRequest request, CancellationToken cancellationToken)
+        public async Task<ActionResult<PagedResult<BookDto>>> GetAllBooks([FromQuery] BooksPagedFilterRequest request, CancellationToken cancellationToken)
         {
             try
             {
@@ -140,7 +141,7 @@ namespace BookStore.API.Controllers
         [ProducesResponseType(typeof(BookDto), 200)]
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<BookDto>> UpdateBook(int id, BookUpdateDto bookUpdateDto, CancellationToken cancellationToken)
+        public async Task<ActionResult<BookDto>> UpdateBook([FromRoute]int id, BookUpdateDto bookUpdateDto, CancellationToken cancellationToken)
         {
             if (id != bookUpdateDto.Id)
             {

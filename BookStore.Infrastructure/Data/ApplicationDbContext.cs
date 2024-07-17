@@ -16,6 +16,6 @@ namespace BookStore.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<BookEntity>().ToTable("Books");
-        }
+        }   
     }
 }

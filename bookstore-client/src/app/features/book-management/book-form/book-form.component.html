@@ -1,0 +1,41 @@
+<div class="book-form-container">
+  <h2>{{ isEditMode ? 'Edit Book' : 'Add Book' }}</h2>
+  <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" formControlName="title" class="form-control" />
+      <div *ngIf="title?.invalid && (title?.dirty || title?.touched)" class="text-danger">
+        <div *ngIf="title?.errors?.['required']">Title is required.</div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="publicationDate">Publication Date</label>
+      <input type="date" id="publicationDate" formControlName="publicationDate" class="form-control" />
+      <div *ngIf="publicationDate?.invalid && (publicationDate?.dirty || publicationDate?.touched)" class="text-danger">
+        <div *ngIf="publicationDate?.errors?.['required']">Publication date is required.</div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description" class="form-control"></textarea>
+      <div *ngIf="description?.invalid && (description?.dirty || description?.touched)" class="text-danger">
+        <div *ngIf="description?.errors?.['required']">Description is required.</div>
+        <div *ngIf="description?.errors?.['maxlength']">Description cannot be longer than 500 characters.</div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="numberOfPages">Number of Pages</label>
+      <input type="number" id="numberOfPages" formControlName="numberOfPages" class="form-control" />
+      <div *ngIf="numberOfPages?.invalid && (numberOfPages?.dirty || numberOfPages?.touched)" class="text-danger">
+        <div *ngIf="numberOfPages?.errors?.['required']">Number of pages is required.</div>
+        <div *ngIf="numberOfPages?.errors?.['min']">Number of pages must be at least 1.</div>
+      </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary" [disabled]="bookForm.invalid">Save</button>
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+  </form>
+</div>

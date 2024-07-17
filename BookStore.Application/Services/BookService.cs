@@ -4,6 +4,7 @@ using BookStore.Application.Interfaces;
 using BookStore.Domain.Entities;
 using BookStore.Infrastructure.Repositories;
 using BookStore.Infrastructure.Requests;
+using BookStore.Infrastructure.Responses;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,10 +22,11 @@ namespace BookStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<BookDto>> GetAllBooksAsync(BooksPagedFilterRequest request, CancellationToken cancellationToken)
+        public async Task<PagedResult<BookDto>> GetAllBooksAsync(BooksPagedFilterRequest request, CancellationToken cancellationToken)
         {
-            var books = await _bookRepository.GetAllBooksAsync(request, cancellationToken);
-            return _mapper.Map<IEnumerable<BookDto>>(books);
+            var result = await _bookRepository.GetAllBooksAsync(request, cancellationToken);
+            var resultData = _mapper.Map<IEnumerable<BookDto>>(result.Items);
+            return new PagedResult<BookDto> { Items = resultData, TotalCount = result.TotalCount };
         }
 
         public async Task<BookDto> GetBookByIdAsync(int id, CancellationToken cancellationToken)
